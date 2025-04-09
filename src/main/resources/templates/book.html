@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{base::layout(~{::section})}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Books</title>
+<style>
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 400px;
+  perspective: 1000px;
+  font-family: sans-serif;
+  margin-left:40px;
+}
+.flip-card-front img{
+	background-size:cover;
+}
+
+.title {
+  font-size: 1.5em;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+  background-color:red;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transition-timing-function: cubic-bezier(0.61, 0.98, 0.48, 1.01);
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotate(180deg) rotateX(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+}
+
+.flip-card-front {
+  background: #fff;
+  color: #000;
+}
+
+.flip-card-back {
+  background: #000;
+  color: #fff;
+  transform: rotateY(180deg);
+}</style>
+</head>
+<body>
+	<section>
+	
+		<div class="container-fluid bg-primary p-4 mt-5 ">
+			<div class="row">
+				<div class="col-md-8 offset-md-2">
+					<form action="/products" method="get">
+						<div class="input-group">
+							<input type="text" class="form-control" name="ch">
+							<button class="btn btn-light text-dark ms-3 col-md-2">
+								<i class="fa-solid fa-magnifying-glass"></i> Search
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+
+
+		<div class="container-fluid mt-1">
+			<div class="row">
+
+				<div class="col-md-2 p-0">
+
+					<div class="card shadow-sm p-0 mb-5 bg-body-tertiary rounded">
+						<div class="card-body">
+							<div class="list-group">
+								<p class="fs-5">Category</p>
+								<a href="/books"
+									th:classappend="${paramValue==''} ? 'active':''"
+									class="list-group-item list-group-item-action"
+									aria-current="true"> All </a> <a th:each="c:${categories}"
+									th:href="@{'/books?category='+${c.name}}"
+									th:classappend="${paramValue == c.name} ? 'active':''"
+									class="list-group-item list-group-item-action">[[${c.name}]]</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-10 ">
+					<div class="card">
+						<div class="card-body">
+							<p class="fs-3 text-center">Book</p>
+							<div class="row">								
+								<th:block th:if="${booksSize >0}">
+								<div class="flip-card" th:each="b:${books}">
+								  <div class="flip-card-inner">
+								    <div class="flip-card-front">
+										<img alt="" th:src="@{'/image/books/'+${b.image}}">
+								    </div>
+								   <div class="flip-card-back">
+								      <p class="title">[[${b.title}]]</p>
+									  <a th:href="@{'/book/'+${b.id}}"
+									  														class="btn btn-primary col-md-6 offset-md-3">View
+									  														Details</a>
+								    </div>
+								 </div>
+								</div>
+																	
+																	
+								<th:block th:unless="${booksSize>0}">
+									<p class="fs-4 text-center mt-4 text-danger">Product not
+										available</p>
+										
+								</th:block>
+							</div>
+
+						</div>
+					</div>
+					<!-- Start Pagination -->
+					<div class="row">
+						<div class="col-md-4">Total Books : [[${totalElements}]]</div>
+						<div class="col-md-6">
+							<th:block th:if="${productsSize>0}">
+								<nav aria-label="Page navigation example">
+									<ul class="pagination">
+										<li class="page-item"
+											th:classappend="${isFirst} ? 'disabled':''"><a
+											class="page-link"
+											th:href="@{'/products?pageNo='+${pageNo-1}}"
+											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+										</a></li>
+
+										<li th:each="i:${#numbers.sequence(1,totalPages)}"
+											class="page-item" th:classappend="${pageNo+1==i}?'active':''"
+											]]><a class="page-link"
+											th:href="@{'/products?pageNo='+${i-1}}">[[${i}]]</a></li>
+
+										<li class="page-item"
+											th:classappend="${isLast} ? 'disabled':''"><a
+											class="page-link"
+											th:href="@{'/products?pageNo='+${pageNo+1}}"
+											aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+										</a></li>
+									</ul>
+								</nav>
+						</div>
+						</th:block>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</section>
+</body>
+</html>
