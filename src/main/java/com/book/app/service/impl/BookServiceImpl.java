@@ -13,17 +13,24 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.book.app.model.Book;
 import com.book.app.repository.BookRepository;
+import com.book.app.repository.BookRequestRepository;
 import com.book.app.service.BookService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class BookServiceImpl implements BookService {
 
 	@Autowired
 	BookRepository bookRepository;
+	
+	@Autowired
+	BookRequestRepository bookRequestRepository;
 	
 	@Override
 	public Book saveBook(Book book) {
@@ -36,8 +43,10 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
+	@Transactional
 	public Boolean deleteBook(Integer id) {
 		Book book = bookRepository.findById(id).orElse(null);
+		bookRequestRepository.deleteByBookId(id);
 
 		if (!ObjectUtils.isEmpty(book)) {
 			bookRepository.delete(book);

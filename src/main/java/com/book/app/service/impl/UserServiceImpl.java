@@ -2,6 +2,7 @@ package com.book.app.service.impl;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,8 +47,16 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Boolean updateAccountStatus(Integer id, Boolean status) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<User> findByuser = userRepository.findById(id);
+
+		if (findByuser.isPresent()) {
+			User user = findByuser.get();
+			user.setIsEnable(status);
+			userRepository.save(user);
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -100,8 +109,16 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User saveAdmin(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		user.setRole("ROLE_ADMIN");
+		user.setIsEnable(true);
+		user.setAccountNonLocked(true);
+		user.setFailedAttempt(0);
+
+		String encodePassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(encodePassword);
+		User saveUser = userRepository.save(user);
+		return saveUser;
 	}
 
 	@Override

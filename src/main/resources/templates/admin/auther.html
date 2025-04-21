@@ -7,7 +7,7 @@
 </head>
 <body>
 	<section>
-		<div class="container-fluid p-5 mt-5">
+		<div class="container-fluid p-2 mt-2">
 			<div class="row">
 				<div class="col-md-3">
 					<div class="card card-sh">
@@ -75,10 +75,10 @@
 										<th scope="row">[[${c.count}]]</th>
 										<td>[[${auth.name}]]</td>
 										<td>[[${auth.isActive}]]</td>
-										<td><a th:href="@{'/admin/loadEditCategory/'+${auth.id}}"
+										<td><a th:href="@{'/admin/loadEditAuther/'+${auth.id}}"
 											class="btn btn-primary btn-sm"><i
 												class="fa-solid fa-pen-to-square  fa-1x"></i> Edit </a> <a
-											th:href="@{'/admin/deleteCategory/'+${auth.id}}"
+											th:href="@{'/admin/deleteAuther/'+${auth.id}}"
 											class="btn btn-danger btn-sm"><i
 												class="fa-solid fa-trash  fa-1x"></i>Delete</a></td>
 									</tr>

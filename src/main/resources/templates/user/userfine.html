@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{base::layout(~{::section})}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<div class="container mt-4">
+		    <h2>Fine Payment</h2>
+		    <p>Book ID: <span th:text="${issuedBook.bookId}"></span></p>
+		    <p>Fine Amount: <strong th:text="'Rs. ' + ${issuedBook.fine}"></strong></p>
+		    <form th:action="@{'/pay-fine/' + ${issuedBook.id}}" method="get">
+		        <button class="btn btn-primary">Pay Now</button>
+		    </form>
+		</div>
+		</section>
+</body>
+</html>

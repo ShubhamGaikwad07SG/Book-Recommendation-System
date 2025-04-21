@@ -24,11 +24,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.book.app.model.Auther;
 import com.book.app.model.Book;
+import com.book.app.model.BookIssue;
 import com.book.app.model.Category;
+import com.book.app.model.User;
 import com.book.app.service.AutherService;
+import com.book.app.service.BookIssueService;
 import com.book.app.service.BookRequestService;
 import com.book.app.service.BookService;
 import com.book.app.service.CategoryService;
+import com.book.app.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -47,6 +51,13 @@ public class AdminController {
      
      @Autowired
      BookRequestService bookrequestService;
+     
+     @Autowired
+     UserService userService;
+     
+     @Autowired
+     private BookIssueService issuedBookService;
+     
 	
 	@GetMapping("/")
 	public String index() {
@@ -120,7 +131,51 @@ public class AdminController {
 
 		return "redirect:/admin/category";
 	}
+	
+	@GetMapping("/loadEditCategory/{id}")
+	public String loadEditCategory(@PathVariable int id, Model m) {
+		m.addAttribute("category", categoryService.getCategoryById(id));
+		System.out.println(categoryService.getCategoryById(id)+"Shubhamllllllllllll");
+		return "admin/editcategory";
+	}
 
+	@PostMapping("/updateCategory")
+	public String updateCategory(@ModelAttribute Category category, @RequestParam("file") MultipartFile file,
+			HttpSession session) throws IOException {
+
+		Category oldCategory = categoryService.getCategoryById(category.getId());
+		String imageName = file.isEmpty() ? oldCategory.getImageName() : file.getOriginalFilename();
+
+		if (!ObjectUtils.isEmpty(category)) {
+
+			oldCategory.setName(category.getName());
+			oldCategory.setIsActive(category.getIsActive());
+			oldCategory.setImageName(imageName);
+		}
+
+		Category updateCategory = categoryService.saveCategory(oldCategory);
+
+		if (!ObjectUtils.isEmpty(updateCategory)) {
+
+			if (!file.isEmpty()) {
+				File saveFile = new ClassPathResource("static/img").getFile();
+
+				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "category_img" + File.separator
+						+ file.getOriginalFilename());
+
+				// System.out.println(path);
+				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+			}
+
+			session.setAttribute("succMsg", "Category update success");
+		} else {
+			session.setAttribute("errorMsg", "something wrong on server");
+		}
+
+		return "redirect:/admin/loadEditCategory/" + category.getId();
+	}
+	
+	
 	
 	// ---------------------  End	Category Section-----------------------------------------------
 	
@@ -166,6 +221,36 @@ public class AdminController {
 		}
 
 		return "redirect:/admin/auther";
+	}
+	
+	@GetMapping("/loadEditAuther/{id}")
+	public String loadEditAuther(@PathVariable int id, Model m) {
+		m.addAttribute("auther", autherService.getAutherById(id));
+		return "admin/editauther";
+	}
+	
+	
+	@PostMapping("/updateAuther")
+	public String updateAuther(@ModelAttribute Auther auther,HttpSession session) throws IOException {
+
+		Auther oldAuther = autherService.getAutherById(auther.getId());
+
+		if (!ObjectUtils.isEmpty(auther)) {
+
+			oldAuther.setName(auther.getName());
+			oldAuther.setIsActive(auther.getIsActive());
+		}
+
+		Auther updateAuther = autherService.saveAuther(oldAuther);
+
+		if (!ObjectUtils.isEmpty(updateAuther)) {
+
+			session.setAttribute("succMsg", "Auther update success");
+		} else {
+			session.setAttribute("errorMsg", "something wrong on server");
+		}
+
+		return "redirect:/admin/loadEditAuther/" + auther.getId();
 	}
 
 	// ---------------------  End	Auther Section-----------------------------------------------
@@ -234,6 +319,21 @@ public class AdminController {
 		return "redirect:/admin/loadAddBook";
 }
 	
+	@PostMapping("/updateBook")
+	public String updateBook(@ModelAttribute Book book, @RequestParam("file") MultipartFile image,
+			HttpSession session, Model m) {
+
+		
+			Book updateProduct = bookService.updateBook(book, image);
+			if (!ObjectUtils.isEmpty(updateProduct)) {
+				session.setAttribute("succMsg", "Product update success");
+			} else {
+				session.setAttribute("errorMsg", "Something wrong on server");
+			}
+		return "redirect:/admin/editBook/" + book.getId();
+	}
+
+	
 	@GetMapping("/deleteBook/{id}")
 	public String deleteBook(@PathVariable int id, HttpSession session) {
 		Boolean deleteBook = bookService.deleteBook(id);
@@ -245,11 +345,11 @@ public class AdminController {
 		return "redirect:/admin/books";
 	}
 
-	@GetMapping("/editProduct/{id}")
+	@GetMapping("/editBook/{id}")
 	public String editProduct(@PathVariable int id, Model m) {
 		m.addAttribute("book", bookService.getBookById(id));
 		m.addAttribute("categories", categoryService.getAllCategory());
-		return "admin/edit_book";
+		return "admin/editbook";
 	}
 
 	@PostMapping("/updateProduct")
@@ -287,5 +387,89 @@ public class AdminController {
 	    	bookrequestService.updateRequestStatus(id, "REJECTED");
 	        return "redirect:/admin/request";
 	    }
+	    
+		/*------------------------------------ ADD ADMIN----------------------------- */
+	    
+	    @GetMapping("/add-admin")
+		public String loadAdminAdd() {
+			return "/admin/add_admin";
+		}
+
+		@PostMapping("/save-admin")
+		public String saveAdmin(@ModelAttribute User user,@RequestParam("img") MultipartFile file, HttpSession session)
+				throws IOException {
+
+			String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
+			user.setProfileImage(imageName);
+			User saveUser = userService.saveAdmin(user);
+
+			if (!ObjectUtils.isEmpty(saveUser)) {
+				if (!file.isEmpty()) {
+					File saveFile = new ClassPathResource("static/image").getFile();
+
+					Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "profile" + File.separator
+							+ file.getOriginalFilename());
+
+//					System.out.println(path);
+					Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+				}
+				session.setAttribute("succMsg", "Register successfully");
+			} else {
+				session.setAttribute("errorMsg", "something wrong on server");
+			}
+
+			return "redirect:/admin/add-admin";
+		}
+		
+		
+		
+		@GetMapping("/users")
+		public String getAllUsers(Model m, @RequestParam Integer type) {
+			List<User> users = null;
+			if (type == 1) {
+				users = userService.getUsers("ROLE_USER");
+			} else {
+				users = userService.getUsers("ROLE_ADMIN");
+			}
+			m.addAttribute("userType",type);
+			m.addAttribute("users", users);
+			return "/admin/users";
+		}
+		
+		@GetMapping("/profile")
+		public String profile() {
+			return "/admin/profile";
+		}
+		
+		
+		/* Upadate User Status */
+		
+		@GetMapping("/updateSts")
+		public String updateUserAccountStatus(@RequestParam Boolean status, @RequestParam Integer id,@RequestParam Integer type, HttpSession session) {
+			Boolean f = userService.updateAccountStatus(id, status);
+			if (f) {
+				session.setAttribute("succMsg", "Account Status Updated");
+			} else {
+				session.setAttribute("errorMsg", "Something wrong on server");
+			}
+			return "redirect:/admin/users?type="+type;
+		}
+
+		
+		
+		/* Issue Book */
+		
+		@GetMapping("/return-requests")
+		public String viewReturnRequests(Model model) {
+		    List<BookIssue> returnRequests = issuedBookService.getPendingReturns();
+		    model.addAttribute("returnRequests", returnRequests);
+		    return "return_request";
+		}
+
+		    @PostMapping("/accept-return/{id}")
+		    public String acceptReturn(@PathVariable int id) {
+		        issuedBookService.acceptReturn(id);
+		        return "redirect:/admin/return-requests";
+		    }
 }
 	

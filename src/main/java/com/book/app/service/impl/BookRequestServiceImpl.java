@@ -52,7 +52,6 @@ public class BookRequestServiceImpl implements BookRequestService{
 		@Override
 		public void updateRequestStatus(int requestId, String status) {
 			Optional<BookRequest> reqOpt = bookrequestRepo.findById(requestId);
-			System.out.println("TTTTTTTTTTTTTTT........."+reqOpt);
 	        if (reqOpt.isPresent()) {
 	        	BookRequest req = reqOpt.get();
 	            req.setStatus(status);
@@ -64,7 +63,6 @@ public class BookRequestServiceImpl implements BookRequestService{
 
 		@Override
 		public List<BookRequest> getRequestsByUser(int userId) {
-			// TODO Auto-generated method stub
 			return bookrequestRepo.findByUserId(userId);
 		}
 		

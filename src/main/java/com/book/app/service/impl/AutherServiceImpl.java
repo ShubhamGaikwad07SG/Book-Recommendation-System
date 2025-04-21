@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.book.app.model.Auther;
+import com.book.app.model.Category;
 import com.book.app.repository.AutherRepository;
 import com.book.app.service.AutherService;
 
@@ -44,8 +45,8 @@ public class AutherServiceImpl implements AutherService {
 
 	@Override
 	public Auther getAutherById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Auther auther = autherRepository.findById(id).orElse(null);
+		return auther;
 	}
 
 	@Override

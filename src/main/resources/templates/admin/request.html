@@ -7,7 +7,7 @@
 </head>
 <body>
 	<section>
-		<div class="container-fluid p-5 mt-5">
+		<div class="container-fluid p-2 mt-2">
 			<div class="row">
 				<h2>All Book Requests</h2>
 				    <table class="table table-bordered">
@@ -27,14 +27,14 @@
 				            <td th:text="${req.status}"></td>
 				            <td th:text="${req.requestDate}"></td>
 				            <td>
-				                <div th:if="${req.status == 'PENDING'}">
-									<form th:action="@{'/approve/' + ${req.id}}" method="post" style="display:inline;">
-									        <button type="submit" class="btn btn-success btn-sm">Approve</button>
-									    </form>
-									    <form th:action="@{'/reject/' + ${req.id}}" method="post" style="display:inline;">
-									        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
-									    </form>
-				                </div>
+								<div th:if="${req.status == 'PENDING'}">
+								    <form th:action="@{'/admin/approve/' + ${req.id}}" method="post" style="display:inline;">
+								        <button type="submit" class="btn btn-success btn-sm">Approve</button>
+								    </form>
+								    <form th:action="@{'/admin/reject/' + ${req.id}}" method="post" style="display:inline;">
+								        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+								    </form>
+								</div>
 				                <div th:if="${req.status != 'PENDING'}">—</div>
 				            </td>
 				        </tr>

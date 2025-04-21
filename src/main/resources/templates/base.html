@@ -4,27 +4,16 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Home</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
- 
-<!-- Add the AOS Library -->
-<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-	crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-	integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-	crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="/css/navbar.css">
 </head>
 <body>
 	<!-- Start Navbar  -->
-	<nav class="navbar navbar-expand-lg  bg-primary fixed-top navbar-dark">
+	<nav class="navbar navbar-expand-lg colo sticky-top navbar-dark">
 			<div class="container-fluid">
 				<img src="/image/logo.png" height="70px" alt="...">
 				<button class="navbar-toggler" type="button"
@@ -120,100 +109,76 @@
 	<div th:replace="${content}"></div>
 
 	<!-- Start Footer -->
-	<div>
-	    <!-- Footer Area -->
-	    <div class="footer-area bg-primary">
-	        <div class="container">
-	            <div class="row">
-	                <!-- BookApp Section -->
-	                <div class="col-md-3 col-sm-6">
-	                    <h4 class="footer-heading">BookApp</h4>
-	                    <div class="footer-underline"></div>
-	                    <p>
-	                       Library staff and patrons efficiently manage books, track borrowing, and maintain library records. It includes features like cataloging, user profiles, transaction tracking, and overdue management. The system supports easy book search, reservation, and reporting for improved library operations.
-	                    </p>
-	                </div>
-	                <!-- Quick Links Section -->
-	                <div class="col-md-3 col-sm-6">
-	                    <h4 class="footer-heading">Quick Links</h4>
-	                    <div class="footer-underline"></div>
-	                    <div class="mb-2"><a href="" class="text-white">Home</a></div>
-	                    <div class="mb-2"><a href="" class="text-white">About Us</a></div>
-	                    <div class="mb-2"><a href="" class="text-white">Contact Us</a></div>
-	                    <div class="mb-2"><a href="" class="text-white">Blogs</a></div>
-	                    <div class="mb-2"><a href="" class="text-white">Sitemaps</a></div>
-	                </div>
-	                <!-- Shop Now Section -->
-	                <div class="col-md-3 col-sm-6">
-	                    <h4 class="footer-heading">Shop Now</h4>
-	                    <div class="footer-underline"></div>
-	                    <div class="mb-2"><a href="" class="text-white">Collections</a></div>
-	                    <div class="mb-2"><a href="" class="text-white">Trending Products</a></div>
-	                    <div class="mb-2"><a href="" class="text-white">New Arrivals Products</a></div>
-	                    <div class="mb-2"><a href="" class="text-white">Featured Products</a></div>
-	                    <div class="mb-2"><a href="" class="text-white">Cart</a></div>
-	                </div>
-	                <!-- Reach Us Section -->
-	                <div class="col-md-3 col-sm-6">
-	                    <h4 class="footer-heading">Reach Us</h4>
-	                    <div class="footer-underline"></div>
-	                    <div class="mb-2">
-	                        <p>
-	                            <i class="fa fa-map-marker"></i> #444, some main road, some area, some street, pune, india - 411058
-	                        </p>
-	                    </div>
-	                    <div class="mb-2">
-	                        <a href="" class="text-white">
-	                            <i class="fa fa-phone"></i> +91 954-XXX-XXXX
-	                        </a>
-	                    </div>
-	                    <div class="mb-2">
-	                        <a href="" class="text-white">
-	                            <i class="fa fa-envelope"></i> shubhampgaikwad99@gmail.com
-	                        </a>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
+	<!-- Footer Area -->
+	<footer class="bg-primary text-white pt-5">
+	  <div class="container">
+	    <div class="row g-4">
+
+	      <!-- BookApp Section -->
+	      <div class="col-lg-3 col-md-6">
+	        <h5 class="fw-bold">BookApp</h5>
+	        <div class="mb-3 border-bottom border-light w-25"></div>
+	        <p class="small">
+	          Library staff and patrons efficiently manage books, track borrowing, and maintain records.
+	          Includes features like cataloging, transactions, overdue management, and reports.
+	        </p>
+	      </div>
+
+	      <!-- Quick Links -->
+	      <div class="col-lg-3 col-md-6">
+	        <h5 class="fw-bold">Quick Links</h5>
+	        <div class="mb-3 border-bottom border-light w-25"></div>
+	        <ul class="list-unstyled">
+	          <li><a href="#" class="text-white text-decoration-none">Home</a></li>
+	          <li><a href="#" class="text-white text-decoration-none">About Us</a></li>
+	          <li><a href="#" class="text-white text-decoration-none">Return Policy</a></li>
+	          <li><a href="#" class="text-white text-decoration-none">Terms & Conditions</a></li>
+	          <li><a href="#" class="text-white text-decoration-none"> Privacy Policy</a></li>
+	        </ul>
+	      </div>
+
+	      <!-- Shop Now -->
+	      <div class="col-lg-3 col-md-6">
+	        <h5 class="fw-bold">User Services</h5>
+	        <div class="mb-3 border-bottom border-light w-25"></div>
+	        <ul class="list-unstyled">
+	          <li><a href="#" class="text-white text-decoration-none">My Account / Profile</a></li>
+	          <li><a href="#" class="text-white text-decoration-none">Request Books</a></li>
+	          <li><a href="#" class="text-white text-decoration-none"> Fine & Payment</a></li>
+	          <li><a href="#" class="text-white text-decoration-none">Contact Support</a></li>
+	          
+	        </ul>
+	      </div>
+
+	      <!-- Reach Us -->
+	      <div class="col-lg-3 col-md-6">
+	        <h5 class="fw-bold">Reach Us</h5>
+	        <div class="mb-3 border-bottom border-light w-25"></div>
+	        <p class="mb-1"><i class="fa fa-map-marker me-2"></i> #444, Some Street, Pune, India - 411058</p>
+	        <p class="mb-1"><i class="fa fa-phone me-2"></i> +91 954-XXX-XXXX</p>
+	        <p><i class="fa fa-envelope me-2"></i> shubhampgaikwad99@gmail.com</p>
+	      </div>
+
 	    </div>
-	    <!-- Copyright Area -->
-	    <div class="copyright-area">
-	        <div class="container">
-	            <div class="row">
-	                <div class="col-md-8">
-	                    <p class=""> &copy; 2025 - Shubham_SG - Book Management. All rights reserved.</p>
-	                </div>
-	                <div class="col-md-4">
-	                    <div class="social-media">
-	                        Get Connected:
-	                        <a href="#"> <i class="fa fa-facebook"></i> </a>
-	                        <a href=""><i class="fa fa-twitter"></i></a>
-	                        <a href=""><i class="fa fa-instagram"></i></a>
-	                        <a href=""><i class="fa fa-youtube"></i></a>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
+	  </div>
+
+	  <!-- Copyright & Social -->
+	  <div class="container border-top border-light mt-4 pt-3">
+	    <div class="row align-items-center text-center text-md-start">
+	      <div class="col-md-8 mb-2 mb-md-0">
+	        <p class="mb-0 small">&copy; 2025 - Shubham_SG - Book Management. All rights reserved.</p>
+	      </div>
+	      <div class="col-md-4 text-md-end">
+	        <span class="me-2 small">Get Connected:</span>
+	        <a href="#" class="text-white me-2"><i class="fa fa-facebook"></i></a>
+	        <a href="#" class="text-white me-2"><i class="fa fa-twitter"></i></a>
+	        <a href="#" class="text-white me-2"><i class="fa fa-instagram"></i></a>
+	        <a href="#" class="text-white"><i class="fa fa-youtube"></i></a>
+	      </div>
 	    </div>
-	</div>
-
-
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-
+	  </div>
+	</footer>
 
 	<!-- End Footer  -->
-
-	<!-- Jquery Validation Library  -->
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
-	<script type="text/javascript" src="js/script.js"></script>
-	<script type="text/javascript" src="../js/script.js"></script>
-	<!-- End  -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-		crossorigin="anonymous"></script>
 </body>
 </html>

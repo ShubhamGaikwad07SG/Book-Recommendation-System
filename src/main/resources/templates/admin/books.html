@@ -8,7 +8,7 @@
 </head>
 <body>
 	<section>
-		<div class="container-fluid mt-4 p-3">
+		<div class="container-fluid p-2 mt-2">
 			<div class="row">
 				<p class="text-center fs-3 mt-2">All Books</p>
 				<hr>
@@ -54,9 +54,6 @@
 								<th scope="col">Title</th>
 								<th scope="col">Auther</th>
 								<th scope="col">Category</th>
-								<th scope="col">Price</th>
-								<th scope="col">Discount</th>
-								<th scope="col">Discount Price</th>
 								<th scope="col">Status</th>
 								<th scope="col">Stock</th>
 								<th scope="col">Action</th>
@@ -68,6 +65,7 @@
 								<td><img th:src="@{'/image/books/'+${b.image}}"
 									width="70px" height="70px"></td>
 								<td>[[${b.title}]]</td>
+								<td>[[${b.auther}]]</td>
 								<td>[[${b.category}]]</td>
 								<td>[[${b.isActive}]]</td>
 								<td>[[${b.stock}]]</td>

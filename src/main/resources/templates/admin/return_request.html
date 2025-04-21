@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{base::layout(~{::section})}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<div class="container p-2 mt-2">
+		    <h2>Book Return Requests</h2>
+		    <table class="table table-bordered">
+		        <thead>
+		        <tr>
+		            <th>User ID</th>
+		            <th>Book ID</th>
+		            <th>Issue Date</th>
+		            <th>Return Date</th>
+		            <th>Fine</th>
+		            <th>Action</th>
+		        </tr>
+		        </thead>
+		        <tbody>
+		        <tr th:each="issued : ${returnRequests}">
+		            <td th:text="${issued.userId}"></td>
+		            <td th:text="${issued.bookId}"></td>
+		            <td th:text="${issued.issueDate}"></td>
+		            <td th:text="${issued.returnDate}"></td>
+		            <td th:text="${issued.fine > 0 ? 'Rs. ' + issued.fine : 'No Fine'}"></td>
+		            <td>
+		                <form th:action="@{'/admin/accept-return/' + ${issued.id}}" method="post">
+		                    <button class="btn btn-success btn-sm" th:if="${!issued.isReturnAccepted}">Accept Return</button>
+		                </form>
+		            </td>
+		        </tr>
+		        </tbody>
+		    </table>
+		</div>
+		</section>
+</body>
+</html>

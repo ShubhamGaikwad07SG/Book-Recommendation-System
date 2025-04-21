@@ -6,21 +6,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+import com.book.app.model.BookIssue;
 import com.book.app.model.Category;
 import com.book.app.model.User;
+import com.book.app.service.BookIssueService;
 import com.book.app.service.BookRequestService;
-
 import com.book.app.service.CategoryService;
 import com.book.app.service.UserService;
-
-import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -33,7 +32,9 @@ public class UserController {
 	@Autowired
 	CategoryService categoryService;
 	
-	
+
+    @Autowired
+    private BookIssueService issuedBookService;
 	
 	@Autowired
 	BookRequestService bookrequestService;
@@ -90,5 +91,22 @@ public class UserController {
 	        return "redirect:/books"; 
 	    }
 	    
+	    
+	    
+		/* Return and issue book */
+	    
+	    @GetMapping("/issued-books")
+	    public String viewIssuedBooks(Model model) {
+	        int userId = 1; // Replace with actual logged-in user logic
+	        List<BookIssue> books = issuedBookService.getIssuedBooksByUser(userId);
+	        model.addAttribute("issuedBooks", books);
+	        return "issued_book";
+	    }
+
+	    @PostMapping("/return-request/{id}")
+	    public String requestReturn(@PathVariable int id) {
+	        issuedBookService.requestReturn(id);
+	        return "redirect:/user/issued-books";
+	    }
 		
 }

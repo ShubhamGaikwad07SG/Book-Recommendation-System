@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{base::layout(~{::section})}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<div class="container mt-4">
+		    <h2>My Issued Books</h2>
+		    <table class="table table-bordered">
+		        <thead>
+		        <tr>
+		            <th>Book ID</th>
+		            <th>Issue Date</th>
+		            <th>Return Date</th>
+		            <th>Returned</th>
+		            <th>Fine</th>
+		            <th>Action</th>
+		        </tr>
+		        </thead>
+		        <tbody>
+		        <tr th:each="book : ${issuedBooks}">
+		            <td th:text="${book.bookId}"></td>
+		            <td th:text="${book.issueDate}"></td>
+		            <td th:text="${book.returnDate != null ? book.returnDate : 'Not yet returned'}"></td>
+		            <td th:text="${book.isReturned ? 'Yes' : 'No'}"></td>
+		            <td th:text="${book.fine > 0 ? 'Rs. ' + book.fine : 'No Fine'}"></td>
+		            <td>
+		                <form th:action="@{'/user/return-request/' + ${book.id}}" method="post">
+		                    <button class="btn btn-warning btn-sm" th:if="${!book.isReturned}">Request Return</button>
+		                </form>
+		            </td>
+		        </tr>
+		        </tbody>
+		    </table>
+		</div>
+		</section>
+</body>
+</html>
