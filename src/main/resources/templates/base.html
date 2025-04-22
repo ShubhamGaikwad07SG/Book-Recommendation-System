@@ -33,11 +33,11 @@
 						<th:block th:unless="${user==null}">
 							<li class="nav-item" th:if="${user.role=='ROLE_ADMIN'}"><a
 								class="nav-link active" aria-current="page" href="/admin/"><i
-									class="fa-solid fa-house"></i> Home</a></li>
+									class="fa-solid fa-house"></i>Admin Home</a></li>
 
 							<li class="nav-item" th:if="${user.role=='ROLE_USER'}"><a
 								class="nav-link active" aria-current="page" href="/"><i
-									class="fa-solid fa-house"></i> Home</a></li>
+									class="fa-solid fa-house"></i>user Home</a></li>
 						</th:block>
 
 
@@ -45,14 +45,6 @@
 						<li class="nav-item"><a class="nav-link active"
 							aria-current="page" href="/books">Books</a></li>
 
-						<li class="nav-item dropdown"><a
-							class="nav-link dropdown-toggle" href="#" role="button"
-							data-bs-toggle="dropdown" aria-expanded="false"> Category </a>
-							<ul class="dropdown-menu">
-								<li th:each="c:${categorys}"><a class="dropdown-item"
-									th:href="@{'/books?category='+${c.name}}">[[${c.name}]]</a></li>
-
-							</ul></li>
 
 					</ul>
 
@@ -70,9 +62,9 @@
 						<th:block th:if="${user!=null}">
 							<th:block th:if="${user.role=='ROLE_USER'}">
 								<li class="nav-item"><a class="nav-link active"
-								aria-current="page" href="/user/return-book"> Return</a></li>
+								aria-current="page" href="/user/return-book"> Return Book</a></li>
 								<li class="nav-item"><a class="nav-link active"
-						        aria-current="page" href="/user/request"> Request</a></li>
+						        aria-current="page" href="/user/request"> Request Book</a></li>
 								
 							</th:block>
 							<li class="nav-item dropdown"><a
@@ -87,8 +79,7 @@
 									<li th:if="${user.role=='ROLE_ADMIN'}"><a
 										class="dropdown-item" href="/admin/profile">Profile</a></li>
 
-									<li th:if="${user.role=='ROLE_USER'}"><a
-										class="dropdown-item" href="/user/user-orders">My Orders</a></li>
+									<li th:if="${user.role=='ROLE_USER'}">
 									<li><a class="dropdown-item" href="/logout">Logout</a></li>
 									<li><hr class="dropdown-divider"></li>
 
@@ -112,13 +103,13 @@
 
 	<!-- Start Footer -->
 	<!-- Footer Area -->
-	<footer class="bg-primary text-white pt-5">
+	<footer class="fot text-white pt-5">
 	  <div class="container">
 	    <div class="row g-4">
 
 	      <!-- BookApp Section -->
 	      <div class="col-lg-3 col-md-6">
-	        <h5 class="fw-bold">BookApp</h5>
+	        <h5 class="fw-bold text-white">BookApp</h5>
 	        <div class="mb-3 border-bottom border-light w-25"></div>
 	        <p class="small">
 	          Library staff and patrons efficiently manage books, track borrowing, and maintain records.
@@ -128,7 +119,7 @@
 
 	      <!-- Quick Links -->
 	      <div class="col-lg-3 col-md-6">
-	        <h5 class="fw-bold">Quick Links</h5>
+	        <h5 class="fw-bold text-white">Quick Links</h5>
 	        <div class="mb-3 border-bottom border-light w-25"></div>
 	        <ul class="list-unstyled">
 	          <li><a href="#" class="text-white text-decoration-none">Home</a></li>
@@ -141,7 +132,7 @@
 
 	      <!-- Shop Now -->
 	      <div class="col-lg-3 col-md-6">
-	        <h5 class="fw-bold">User Services</h5>
+	        <h5 class="fw-bold text-white">User Services</h5>
 	        <div class="mb-3 border-bottom border-light w-25"></div>
 	        <ul class="list-unstyled">
 	          <li><a href="#" class="text-white text-decoration-none">My Account / Profile</a></li>
@@ -154,7 +145,7 @@
 
 	      <!-- Reach Us -->
 	      <div class="col-lg-3 col-md-6">
-	        <h5 class="fw-bold">Reach Us</h5>
+	        <h5 class="fw-bold text-white">Reach Us</h5>
 	        <div class="mb-3 border-bottom border-light w-25"></div>
 	        <p class="mb-1"><i class="fa fa-map-marker me-2"></i> #444, Some Street, Pune, India - 411058</p>
 	        <p class="mb-1"><i class="fa fa-phone me-2"></i> +91 954-XXX-XXXX</p>
