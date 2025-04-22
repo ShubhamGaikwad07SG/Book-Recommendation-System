@@ -28,6 +28,10 @@ public class BookRequest {
 	    private LocalDate requestDate ;
 	    private LocalDate issueDate;
 	    private LocalDate dueDate;
+	    
+	    private LocalDate returnedDate;
+	    private double fine;
+	    
 		public int getId() {
 			return id;
 		}
@@ -69,6 +73,18 @@ public class BookRequest {
 		}
 		public void setDueDate(LocalDate dueDate) {
 			this.dueDate = dueDate;
+		}
+		public LocalDate getReturnedDate() {
+			return returnedDate;
+		}
+		public void setReturnedDate(LocalDate returnedDate) {
+			this.returnedDate = returnedDate;
+		}
+		public double getFine() {
+			return fine;
+		}
+		public void setFine(double fine) {
+			this.fine = fine;
 		}
 	    
 	    

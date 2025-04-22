@@ -11,6 +11,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
@@ -22,10 +24,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.book.app.model.Book;
+import com.book.app.model.BookReview;
 import com.book.app.model.Category;
 import com.book.app.model.User;
+import com.book.app.service.BookReviewService;
 import com.book.app.service.BookService;
-
 import com.book.app.service.CategoryService;
 import com.book.app.service.UserService;
 
@@ -43,6 +46,9 @@ public class HomeController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private BookReviewService bookReviewService;
 	
 	@ModelAttribute
 	public void getUserDetails(Principal p, Model m) {
@@ -115,10 +121,17 @@ public class HomeController {
 	
 
 	@GetMapping("/book/{id}")
-	public String product(@PathVariable int id, Model m) {
-		Book bookById = bookService.getBookById(id);
-		m.addAttribute("book", bookById);
-		return "view_book";
+	public String product(@PathVariable("id") int id,
+	                      @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+	                      Model m) {
+
+	    Book bookById = bookService.getBookById(id);
+	    Pageable pageable = PageRequest.of(page, 1); 
+	    Page<BookReview> reviewPage = bookReviewService.getReviewsByBookId(id, pageable);
+
+	    m.addAttribute("book", bookById);
+	    m.addAttribute("reviewPage", reviewPage);
+	    return "view_book";
 	}
 	
 	@PostMapping("/saveUser")

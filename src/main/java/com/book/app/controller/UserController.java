@@ -4,6 +4,9 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.book.app.model.BookIssue;
+import com.book.app.model.Book;
+import com.book.app.model.BookReview;
 import com.book.app.model.Category;
 import com.book.app.model.User;
-import com.book.app.service.BookIssueService;
 import com.book.app.service.BookRequestService;
+import com.book.app.service.BookReturnService;
+import com.book.app.service.BookReviewService;
+import com.book.app.service.BookService;
 import com.book.app.service.CategoryService;
 import com.book.app.service.UserService;
 
@@ -30,11 +36,17 @@ public class UserController {
 	UserService userService;
 	
 	@Autowired
-	CategoryService categoryService;
+	BookReturnService bookReturnService;
 	
+	 @Autowired
+	 private BookReviewService reviewService;
+	
+	@Autowired
+	BookService bookService;
+	
+	@Autowired
+	CategoryService categoryService;
 
-    @Autowired
-    private BookIssueService issuedBookService;
 	
 	@Autowired
 	BookRequestService bookrequestService;
@@ -95,18 +107,48 @@ public class UserController {
 	    
 		/* Return and issue book */
 	    
-	    @GetMapping("/issued-books")
-	    public String viewIssuedBooks(Model model) {
-	        int userId = 1; // Replace with actual logged-in user logic
-	        List<BookIssue> books = issuedBookService.getIssuedBooksByUser(userId);
-	        model.addAttribute("issuedBooks", books);
-	        return "issued_book";
+	    @GetMapping("/return-book")
+	    public String viewMyReturnBook(Model model,Principal p) {
+	        int userId = userService.getLoggedInUserId(p);
+	        model.addAttribute("bookreturn", bookrequestService.getRequestsByUser(userId));
+	        return "user/return_request";
 	    }
 
-	    @PostMapping("/return-request/{id}")
-	    public String requestReturn(@PathVariable int id) {
-	        issuedBookService.requestReturn(id);
-	        return "redirect:/user/issued-books";
+	    @GetMapping("/returnbook")
+	    public String returnBook(@RequestParam("bid") int bookId,@RequestParam("uid") int userId,Principal p) {
+	       
+	    	bookReturnService.sendReturnRequest(userId, bookId);
+	        return "redirect:/books"; 
 	    }
-		
+	
+	    
+	    
+		/* ------------------------- Review Book=-------------------- */
+	    
+	    @GetMapping("/review/{bookId}")
+	    public String reviewForm(@PathVariable int bookId, Model model) {
+	        model.addAttribute("bookId", bookId);
+	        model.addAttribute("review", new BookReview());
+	        return "user/review";
+	    }
+
+	    @PostMapping("/review-book/{bookId}")
+	    public String submitReview(@PathVariable int bookId,
+	                               @ModelAttribute BookReview review) {
+	    	 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    	 
+	    	 if (authentication == null || !authentication.isAuthenticated()) {
+	    	        return "redirect:/login";
+	    	    }
+
+	    	 String email = authentication.getName();
+	    	   User user = userService.getUserByEmail(email);
+	        Book book = bookService.getBookById(bookId);
+	       
+	        review.setBook(book);
+	        review.setUser(user);
+	        reviewService.saveReview(review);
+	        return "redirect:/books";
+	    }
+	    
 }

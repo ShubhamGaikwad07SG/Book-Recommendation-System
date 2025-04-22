@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{base::layout(~{::section})}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+			<div class="container-fluid p-3 mt-2">
+				<form th:action="@{/user/review-book/{bookId}(bookId=${bookId})}" th:object="${review}" method="post">
+				    <label>Rating (1-5):</label>
+				    <input type="number" th:field="*{rating}" min="1" max="5" required />
+				    <br/>
+				    <label>Review:</label><br/>
+				    <textarea th:field="*{review}" rows="4" required></textarea>
+				    <br/>
+				    <button type="submit">Submit Review</button>
+				</form>
+
+			</div>
+		</section>
+</body>
+</html>

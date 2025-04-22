@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{base::layout(~{::section})}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<!-- borrowed-books.html -->
+		<table class="table table-bordered">
+		    <thead>
+		        <tr>
+		            <th>Book</th>
+		            <th>Issue Date</th>
+		            <th>Return</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr th:each="returnbook : ${bookreturn}">
+		            <td th:text="${returnbook.book.title}"></td>
+					<td th:text="${returnbook.issueDate}"></td>
+		           
+		            <td>
+						<th:block th:if="${returnbook.status == 'APPROVED'}">
+						               <a th:href="@{'/user/requestbook?bid='+${returnbook.book.id}+'&uid='+${user.id}}" class="btn btn-primary w-100">Book Return Request</a>
+						              </th:block>
+									  <th:block th:unless="${returnbook.status == 'APPROVED'}">
+									                [[${returnbook.status}]]
+									                </th:block>
+									          
+						
+		            </td>
+		        </tr>
+		    </tbody>
+		</table>
+
+
+		</section>
+</body>
+</html>

@@ -24,12 +24,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.book.app.model.Auther;
 import com.book.app.model.Book;
-import com.book.app.model.BookIssue;
+import com.book.app.model.BookReturn;
 import com.book.app.model.Category;
 import com.book.app.model.User;
 import com.book.app.service.AutherService;
-import com.book.app.service.BookIssueService;
 import com.book.app.service.BookRequestService;
+import com.book.app.service.BookReturnService;
 import com.book.app.service.BookService;
 import com.book.app.service.CategoryService;
 import com.book.app.service.UserService;
@@ -47,6 +47,9 @@ public class AdminController {
      BookService bookService;
      
      @Autowired
+ 	BookReturnService bookReturnService;
+     
+     @Autowired
      AutherService autherService;
      
      @Autowired
@@ -54,11 +57,7 @@ public class AdminController {
      
      @Autowired
      UserService userService;
-     
-     @Autowired
-     private BookIssueService issuedBookService;
-     
-	
+ 
 	@GetMapping("/")
 	public String index() {
 		return "admin/index";
@@ -461,15 +460,22 @@ public class AdminController {
 		
 		@GetMapping("/return-requests")
 		public String viewReturnRequests(Model model) {
-		    List<BookIssue> returnRequests = issuedBookService.getPendingReturns();
-		    model.addAttribute("returnRequests", returnRequests);
-		    return "return_request";
+		    List<BookReturn> pendingRequests = bookReturnService.getPendingRequests();
+		    model.addAttribute("requests", pendingRequests);
+		    return "admin/return_request";
 		}
 
-		    @PostMapping("/accept-return/{id}")
-		    public String acceptReturn(@PathVariable int id) {
-		        issuedBookService.acceptReturn(id);
-		        return "redirect:/admin/return-requests";
-		    }
+		@PostMapping("/return-requests/{requestId}/approve")
+		public String approveReturn(@PathVariable int requestId) {
+			bookReturnService.approveRequest(requestId);
+		    return "redirect:/admin/return-requests";
+		}
+
+		@PostMapping("/return-requests/{requestId}/reject")
+		public String rejectReturn(@PathVariable int requestId) {
+		    bookReturnService.rejectRequest(requestId);
+		    return "redirect:/admin/return_requests";
+		}
+
 }
 	

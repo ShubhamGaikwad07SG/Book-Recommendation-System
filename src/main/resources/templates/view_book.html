@@ -46,6 +46,54 @@
             Category: [[${book.category}]]<br>
             Policy: Before 8 Days Renew and	 Return
           </p>
+		  <!-- Reviews Section -->
+		  <div class="row mt-1">
+		    <div class="col-lg-10 offset-lg-1">
+		      <h5 class="mb-1">Reviews</h5>
+
+		      <!-- If there are no reviews -->
+		      <div th:if="${reviewPage.totalElements == 0}" class="alert alert-info text-center">
+		        No reviews yet for this book.
+		      </div>
+
+		      <!-- List of reviews -->
+		      <div th:each="review : ${reviewPage.content}" class="card mb-3 ">
+		        <div class="card-body">
+		          <h5 class="card-title">
+		            <i class="bi bi-person-fill"></i>
+		            [[${review.user.name}]]
+		          </h5>
+		          <p class="mb-1">
+		            <strong>Rating:</strong>
+		            <span th:text="${review.rating + '/10'}"></span>
+		          </p>
+		          <p class="card-text">[[${review.review}]]</p>
+		          <!-- <small class="text-muted" th:text="'Reviewed on ' + ${#dates.format(review.date, 'dd MMM yyyy')}"></small> -->
+		        </div>
+		      </div>
+
+		      <!-- Pagination Controls -->
+		      <nav th:if="${reviewPage.totalPages > 1}" class="mt-4" aria-label="Reviews Pagination">
+		        <ul class="pagination justify-content-center">
+		          <li class="page-item" th:classappend="${reviewPage.first} ? 'disabled'">
+		            <a class="page-link" th:href="@{|/book/${book.id}?page=${reviewPage.number - 1}|}">Previous</a>
+		          </li>
+
+		          <li class="page-item" th:each="i : ${#numbers.sequence(0, reviewPage.totalPages - 1)}"
+		              th:classappend="${i == reviewPage.number} ? 'active'">
+		            <a class="page-link" th:href="@{|/book/${book.id}?page=${i}|}" th:text="${i + 1}"></a>
+		          </li>
+
+		          <li class="page-item" th:classappend="${reviewPage.last} ? 'disabled'">
+		            <a class="page-link" th:href="@{|/book/${book.id}?page=${reviewPage.number + 1}|}">Next</a>
+		          </li>
+		        </ul>
+		      </nav>
+
+		    </div>
+		  </div>
+
+
 
           <!-- Action Button -->
           <div class="mt-4">
@@ -54,7 +102,7 @@
                 <a href="/signin" class="btn btn-primary w-100">Send Request</a>
               </th:block>
               <th:block th:unless="${user == null}">
-                <a th:href="@{'/user/requestbook?bid='+${book.id}+'&uid='+${user.id}}" class="btn btn-primary w-100">Add To Cart</a>
+                <a th:href="@{'/user/requestbook?bid='+${book.id}+'&uid='+${user.id}}" class="btn btn-primary w-100">send request</a>
               </th:block>
             </th:block>
             <th:block th:unless="${book.stock > 0}">

@@ -7,7 +7,7 @@
 </head>
 <body>
 	<section>
-			<div class="container-fluid p-5 mt-5">
+			<div class="container-fluid p-3 mt-2">
 				<div class="row">
 					<h2>All Book Requests</h2>
 					    <table class="table table-bordered">
@@ -18,6 +18,7 @@
 											    <th>Requested On</th>
 											    <th>Response Date</th>
 												<th>Status</th>
+												<th>Return Action</th>
 					        </tr>
 					        </thead>
 					        <tbody>
@@ -27,6 +28,13 @@
 										    <td th:text="${req.requestDate}"></td>
 										    <td th:text="${req.issueDate} ?: '—'"></td>
 											<td th:text="${req.status}"></td>
+											<td>												
+												<th:block th:if="${req.status=='APPROVED'}">
+												    <a th:href="@{/user/review/{bookId}(bookId=${req.book.id})}" class="btn btn-primary">Write a Review</a>
+												</th:block>
+											</td>
+
+
 											
 					        </tr>
 					        </tbody>
